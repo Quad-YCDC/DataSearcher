@@ -15,14 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-import helloapp.views
+import datasearch.views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',helloapp.views.index,name='index'),
-    path('form/',helloapp.views.form,name='form'),
-    path('test/',helloapp.views.test,name='test'),
-    path('test_post/',helloapp.views.test_post,name='test_post'),
-    path('test_get/',helloapp.views.test_get,name='test_get')
+    path('',datasearch.views.index,name='index')
 ]
