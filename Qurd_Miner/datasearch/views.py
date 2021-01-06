@@ -16,15 +16,37 @@ def form(req):
     
     return render(req,'index.html',data)
 
-def Search(a):
+def Search_Query_indicator(data,data_type):
     cur = connection.cursor()
-    cur.execute('select indicator from reputation_data where indicator=\'%s\';'%a)
+    cur.execute('select indicator from reputation_data where indicator_type = (select id from reputation_indicator where indicator_name ilike %s) and indicator = %s;',(data_type,data))
     result = cur.fetchone()
-    print(result)
+    print('Search_Query_indicator = ',result)
+
+    # select * from reputation_data where indicator_type = (select id from reputation_indicator where indicator_name ilike 'MD5') 
+    # and indicator = 'c4ca4238a0b923820dcc509a6f75849b';
+
+
     if result == None:
         return "결과가 없습니다"
     else:
         return result[0]
+
+def Search_Query_type(a):
+    cur = connection.cursor()
+    cur.execute('select indicator_name from reputation_indicator where indicator_name ilike \'%s\';'%a)
+    result = cur.fetchone()
+    print('Search_Query_type = ',result)
+    if result == None:
+        return "결과가 없습니다"
+    else:
+        return result[0]
+
+def View_indicator_type():
+    cur = connection.cursor()
+    cur.execute('select indicator_name from reputation_indicator;')
+    return cur.fetchall()
+
+
 
 def index(req):
     # view = 'hidden'
@@ -44,13 +66,16 @@ def index(req):
             print('ID DATA = ',Search_type)
             Search_data = req.POST.get('Search_data')
             print('PW DATA = ',Search_data)
-            Search_result = Search(Search_data)
 
+            Search_type_result = Search_Query_type(Search_type)
+            Search_indicator_result = Search_Query_indicator(Search_data,Search_type)
+            a = View_indicator_type()
 
-
+            print('View_indicator_type : ',a)
+            print(type(a))
             data = {
-                'Search_type':Search_type,
-                'Search_result':Search_result,
+                'Search_type_result':Search_type_result,
+                'Search_indicator_result':Search_indicator_result,
                 'view':'visible'
             }
             print(data)
