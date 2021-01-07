@@ -35,7 +35,7 @@ def Search_Query_type(a):
     cur = connection.cursor()
     cur.execute('select indicator_name from reputation_indicator where indicator_name ilike \'%s\';'%a)
     result = cur.fetchone()
-    print('Search_Query_type = ',result)
+    # print('Search_Query_type = ',result)
     if result == None:
         return "결과가 없습니다"
     else:
@@ -44,7 +44,9 @@ def Search_Query_type(a):
 def View_indicator_type():
     cur = connection.cursor()
     cur.execute('select indicator_name from reputation_indicator;')
-    return cur.fetchall()
+    str_list = cur.fetchall()
+    key_list = str_list
+    return dict(zip(key_list,str_list))
 
 
 
@@ -78,7 +80,7 @@ def index(req):
                 'Search_indicator_result':Search_indicator_result,
                 'view':'visible'
             }
-            print(data)
+            # print(data)
             return render(req,'index.html',data)
 
 
