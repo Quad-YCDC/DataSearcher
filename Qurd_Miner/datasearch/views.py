@@ -44,10 +44,13 @@ def Search_Query_type(a):
 def View_indicator_type():
     cur = connection.cursor()
     cur.execute('select indicator_name from reputation_indicator;')
-    str_list = cur.fetchall()
-    key_list = str_list
-    return dict(zip(key_list,str_list))
-
+    arr = []
+    result = cur.fetchall()
+    for i in result:
+        arr += i
+    result = {'Types':arr}
+    print(result)
+    return arr
 
 
 def index(req):
@@ -80,7 +83,9 @@ def index(req):
                 'Search_indicator_result':Search_indicator_result,
                 'view':'visible'
             }
-            # print(data)
+            data.update(a)
+
+            print(data)
             return render(req,'index.html',data)
 
 
